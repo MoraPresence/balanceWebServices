@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+  balancer:
+    container_name: balancerdev
+    build:
+      dockerfile: ./balanceWebServices/Dockerfile
+    ports:
+      - "8000:8000"
+
+  targetService01:
+    container_name: targetService01dev
+    build:
+      dockerfile: ./targetWebService/Dockerfile
+    ports:
+      - "8000:8000"
+
+  targetService02:
+    container_name: targetService02dev
+    build:
+      dockerfile: ./targetWebService/Dockerfile
+    ports:
+      - "8000:8000"
+
+  targetService03:
+    container_name: targetService03dev
+    build:
+      dockerfile: ./targetWebService/Dockerfile
+    ports:
+      - "8000:8000"
+
+  targetService04:
+    container_name: targetService04dev
+    build:
+      dockerfile: ./targetWebService/Dockerfile
+    ports:
+      - "8000:8000"
+        
+  targetService05:
+    container_name: targetService04dev
+    build:
+      dockerfile: ./targetWebService/Dockerfile
+    ports:
+      - "8000:8000"

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var loggerDelay time.Duration = 5
+var loggerDelay time.Duration = 10
 var targetWorkDelay time.Duration = 100
 
 var mutex sync.Mutex
@@ -51,7 +51,7 @@ func (service *Service) Logger() {
 
 		if time.Since(start) >= (loggerDelay * time.Second) {
 			mutex.Lock()
-			log.Printf("current amount request: %v\n", service.Health)
+			log.Printf("Сurrent amount request: %v. From Service: %v\n", service.Health, service.Host)
 			mutex.Unlock()
 		}
 	}
