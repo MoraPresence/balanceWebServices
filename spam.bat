@@ -12,11 +12,11 @@ if %Counter% equ 200 (
 goto :WORK
  
 :offTarget
-echo %Counter%
+docker-compose.exe -f .\docker-compose.yml stop target-service01
 goto :WORK
 
 :onTarget
-echo %Counter%
+docker-compose.exe -f .\docker-compose.yml up -d target-service01
 goto :WORK
  
 exit /b

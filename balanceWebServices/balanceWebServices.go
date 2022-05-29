@@ -43,6 +43,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"sync"
+	"time"
 )
 
 var respDelay int64 = 10
@@ -50,6 +51,7 @@ var respDelay int64 = 10
 var mutex sync.Mutex
 
 type Service struct {
+	Name   string `json:name`
 	Host   string `json:host`
 	Port   string `json:port`
 	Health int    `json:health`
@@ -77,28 +79,25 @@ func getHealthServices(arrayWS []Service) {
 			var trueServer string
 
 			mutex.Lock()
-			trueServer = arrayWS[i].Host + ":" + arrayWS[i].Port
+			trueServer = "http://" + arrayWS[i].Name + ":" + arrayWS[i].Port
 			mutex.Unlock()
 
 			if len(trueServer) == 0 {
 				return
 			}
-			//if ((time.Now().Unix() % respDelay) != 0) && (arrayWS[i].Health == math.MaxInt) {
-			//	continue
-			//}
+			if ((time.Now().Unix() % respDelay) != 0) && (arrayWS[i].Health == math.MaxInt) {
+				continue
+			}
 
 			resp, _ := http.Get(trueServer + "/health")
 			if resp == nil {
-				log.Printf("WHAT??? %v/health\n", trueServer)
 				mutex.Lock()
 				arrayWS[i].Health = math.MaxInt
 				mutex.Unlock()
 				continue
 			} else {
-				log.Printf("NICE")
 				defer resp.Body.Close()
 			}
-			log.Printf("Health target111: %v=%v\n", arrayWS[i].Host, arrayWS[i].Health)
 			if resp.StatusCode == http.StatusOK {
 				body, err := ioutil.ReadAll(resp.Body)
 				if err != nil {
@@ -111,7 +110,6 @@ func getHealthServices(arrayWS []Service) {
 				}
 			}
 			mutex.Lock()
-			log.Printf("arrayWS[i].Health = tmpService.Health: %v=%v\n", arrayWS[i].Health, tmpService.Health)
 			arrayWS[i].Health = tmpService.Health
 			mutex.Unlock()
 		}
@@ -126,11 +124,10 @@ func balanceProxyWebService(w http.ResponseWriter, r *http.Request, arrayWS []Se
 
 	mutex.Lock()
 	for i := 0; i < len(arrayWS); i++ {
-		log.Printf("Health target: %v=%v\n", arrayWS[i].Host, arrayWS[i].Health)
 		if arrayWS[i].Health == math.MaxInt {
 			continue
 		}
-		trueServer = arrayWS[i].Host + ":" + arrayWS[i].Port
+		trueServer = "http://" + arrayWS[i].Name + ":" + arrayWS[i].Port
 		break
 	}
 	mutex.Unlock()
@@ -140,7 +137,6 @@ func balanceProxyWebService(w http.ResponseWriter, r *http.Request, arrayWS []Se
 		log.Println(err)
 		return
 	}
-	log.Printf("Balancer send request to: %v\n", trueServer)
 	proxy := httputil.NewSingleHostReverseProxy(url)
 	proxy.ServeHTTP(w, r)
 

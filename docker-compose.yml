@@ -14,6 +14,8 @@ services:
       - target-service05
     ports:
       - "8080:8080"
+    networks:
+      - installment-loc
 
   target-service01:
     container_name: target-service01
@@ -22,6 +24,8 @@ services:
       dockerfile: ./targetWebService/DockerFiles/Dockerfile01
     ports:
       - "8081:8081"
+    networks:
+      - installment-loc
 
   target-service02:
     container_name: target-service02
@@ -33,6 +37,8 @@ services:
         PORT: 8082
     ports:
       - "8082:8082"
+    networks:
+      - installment-loc
 
   target-service03:
     container_name: target-service03
@@ -44,6 +50,8 @@ services:
         PORT: 8083
     ports:
       - "8083:8083"
+    networks:
+      - installment-loc
 
   target-service04:
     container_name: target-service04
@@ -55,6 +63,8 @@ services:
         PORT: 8084
     ports:
       - "8084:8084"
+    networks:
+      - installment-loc
         
   target-service05:
     container_name: target-service05
@@ -66,6 +76,7 @@ services:
         PORT: 8085
     ports:
       - "8085:8085"
+    networks:
+      - installment-loc
 networks:
-  elk:
-    driver: bridge
+  installment-loc:

@@ -1,21 +1,26 @@
 [
   {
+    "Name": "target-service01",
     "Host": "http://127.0.0.1",
     "Port": "8081"
   },
   {
+    "Name": "target-service02",
     "Host": "http://127.0.0.1",
     "Port": "8082"
   },
   {
+    "Name": "target-service03",
     "Host": "http://127.0.0.1",
     "Port": "8083"
   },
   {
+    "Name": "target-service04",
     "Host": "http://127.0.0.1",
     "Port": "8084"
   },
   {
+    "Name": "target-service05",
     "Host": "http://127.0.0.1",
     "Port": "8085"
   }
