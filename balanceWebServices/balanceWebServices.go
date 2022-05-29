@@ -43,7 +43,6 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"sync"
-	"time"
 )
 
 var respDelay int64 = 10
@@ -73,6 +72,7 @@ func getHealthServices(arrayWS []Service) {
 	for true {
 
 		for i := 0; i < len(arrayWS); i++ {
+
 			var tmpService Service
 			var trueServer string
 
@@ -83,19 +83,22 @@ func getHealthServices(arrayWS []Service) {
 			if len(trueServer) == 0 {
 				return
 			}
-			if ((time.Now().Unix() % respDelay) != 0) && (arrayWS[i].Health == math.MaxInt) {
-				continue
-			}
+			//if ((time.Now().Unix() % respDelay) != 0) && (arrayWS[i].Health == math.MaxInt) {
+			//	continue
+			//}
+
 			resp, _ := http.Get(trueServer + "/health")
 			if resp == nil {
+				log.Printf("WHAT??? %v/health\n", trueServer)
 				mutex.Lock()
 				arrayWS[i].Health = math.MaxInt
 				mutex.Unlock()
 				continue
 			} else {
+				log.Printf("NICE")
 				defer resp.Body.Close()
 			}
-
+			log.Printf("Health target111: %v=%v\n", arrayWS[i].Host, arrayWS[i].Health)
 			if resp.StatusCode == http.StatusOK {
 				body, err := ioutil.ReadAll(resp.Body)
 				if err != nil {
@@ -108,6 +111,7 @@ func getHealthServices(arrayWS []Service) {
 				}
 			}
 			mutex.Lock()
+			log.Printf("arrayWS[i].Health = tmpService.Health: %v=%v\n", arrayWS[i].Health, tmpService.Health)
 			arrayWS[i].Health = tmpService.Health
 			mutex.Unlock()
 		}
@@ -122,6 +126,7 @@ func balanceProxyWebService(w http.ResponseWriter, r *http.Request, arrayWS []Se
 
 	mutex.Lock()
 	for i := 0; i < len(arrayWS); i++ {
+		log.Printf("Health target: %v=%v\n", arrayWS[i].Host, arrayWS[i].Health)
 		if arrayWS[i].Health == math.MaxInt {
 			continue
 		}
@@ -135,7 +140,7 @@ func balanceProxyWebService(w http.ResponseWriter, r *http.Request, arrayWS []Se
 		log.Println(err)
 		return
 	}
-
+	log.Printf("Balancer send request to: %v\n", trueServer)
 	proxy := httputil.NewSingleHostReverseProxy(url)
 	proxy.ServeHTTP(w, r)
 

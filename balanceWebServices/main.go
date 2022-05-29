@@ -20,6 +20,9 @@ func main() {
 	}
 
 	go getHealthServices(data)
+	for i := 0; i < 5; i++ {
+		log.Printf("Balancer target: %v : %v\n", data[i].Host, data[i].Port)
+	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		balanceProxyWebService(w, r, data)

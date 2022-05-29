@@ -17,9 +17,7 @@ func main() {
 	router.HandleFunc("/health", service.HealthHandler)
 
 	http.Handle("/", router)
-
-	go http.ListenAndServe(fmt.Sprintf(":%v", service.Port), nil)
 	go service.Logger()
 	fmt.Printf("%v listening on port: %v, Press <Enter to exit>\n", service.Host, service.Port)
-	fmt.Scanln()
+	http.ListenAndServe(fmt.Sprintf(":%v", service.Port), nil)
 }
