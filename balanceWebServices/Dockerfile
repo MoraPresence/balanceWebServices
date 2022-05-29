@@ -2,11 +2,11 @@ FROM golang:latest
 
 WORKDIR /app
 
-COPY go.mod ./
+COPY ./balanceWebServices/go.mod ./
 
 RUN go mod download
 
-COPY *.go ./
+COPY ./balanceWebServices/*.go ./
 
 RUN go build -o /balancer
 CMD [ "/balancer" ]

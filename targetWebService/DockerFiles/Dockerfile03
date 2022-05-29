@@ -1,0 +1,20 @@
+FROM golang:latest
+
+WORKDIR /target-app
+
+COPY ./targetWebService/go.mod ./
+COPY ./targetWebService/go.sum ./
+
+RUN go mod download
+
+COPY ./targetWebService/*.go ./
+
+RUN go build -o /main
+
+#ARG NAME=${NAME}
+#ARG PORT=${PORT}
+
+#ENV cNAME=${NAME}
+#ENV cPORT=${PORT}
+
+ENTRYPOINT ["/main", "-s=target-service03",  "-p=8083"]

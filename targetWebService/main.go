@@ -11,10 +11,8 @@ func main() {
 	var serviceName = flag.String("s", "", "Name of this Service")
 	var port = flag.String("p", "", "HTTP port to listen to")
 	flag.Parse()
-
 	router := mux.NewRouter()
 	service := Service{*serviceName, *port, 0}
-
 	router.HandleFunc("/", service.HomeHandler)
 	router.HandleFunc("/health", service.HealthHandler)
 

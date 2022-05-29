@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	jfile, err := ioutil.ReadFile("config.json")
+	jfile, err := ioutil.ReadFile("./config.json")
 	if err != nil {
 		log.Fatal(err)
 	}

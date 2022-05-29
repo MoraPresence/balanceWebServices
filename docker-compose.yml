@@ -2,43 +2,67 @@ version: '2'
 
 services:
   balancer:
-    container_name: balancerdev
+    container_name: balancer
     build:
+      context: .
       dockerfile: ./balanceWebServices/Dockerfile
     ports:
-      - "8000:8000"
+      - "8080:8080"
 
-  targetService01:
-    container_name: targetService01dev
+  target-service01:
+    environment:
+      - NAME="TestService01"
+      - PORT=8081
+    container_name: target-service01
     build:
-      dockerfile: ./targetWebService/Dockerfile
+      context: .
+      dockerfile: ./targetWebService/DockerFiles/Dockerfile01
+      args:
+        NAME: "TestService01"
+        PORT: 8081
     ports:
-      - "8000:8000"
+      - "8081:8081"
 
-  targetService02:
-    container_name: targetService02dev
+  target-service02:
+    container_name: target-service02
     build:
-      dockerfile: ./targetWebService/Dockerfile
+      context: .
+      dockerfile: ./targetWebService/DockerFiles/Dockerfile02
+      args:
+        NAME: "TestService02"
+        PORT: 8082
     ports:
-      - "8000:8000"
+      - "8082:8082"
 
-  targetService03:
-    container_name: targetService03dev
+  target-service03:
+    container_name: target-service03
     build:
-      dockerfile: ./targetWebService/Dockerfile
+      context: .
+      dockerfile: ./targetWebService/DockerFiles/Dockerfile03
+      args:
+        NAME: "TestService03"
+        PORT: 8083
     ports:
-      - "8000:8000"
+      - "8083:8083"
 
-  targetService04:
-    container_name: targetService04dev
+  target-service04:
+    container_name: target-service04
     build:
-      dockerfile: ./targetWebService/Dockerfile
+      context: .
+      dockerfile: ./targetWebService/DockerFiles/Dockerfile04
+      args:
+        NAME: "TestService04"
+        PORT: 8084
     ports:
-      - "8000:8000"
+      - "8084:8084"
         
-  targetService05:
-    container_name: targetService04dev
+  target-service05:
+    container_name: target-service05
     build:
-      dockerfile: ./targetWebService/Dockerfile
+      context: .
+      dockerfile: ./targetWebService/DockerFiles/Dockerfile05
+      args:
+        NAME: "TestService05"
+        PORT: 8085
     ports:
-      - "8000:8000"
+      - "8085:8085"
