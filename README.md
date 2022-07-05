@@ -2,20 +2,18 @@
 
 #### Запуск 
 
-    $ go build
-    $ ./serverSocks4Proxy
-    
+
+    $ docker-compose build
+    $ docker-compose up
 #### Остановка ####
 
     ctrl+C
-    
-#### Подготовка ####
 
-    $ sudo ifconfig ens33:0 192.168.234.1
-    $ sudo route add -net 192.168.234.0 netmask 255.255.255.0 ens33:0
-    $ export https_proxy="socks4://192.168.234.1:8081"
-    $ export http_proxy="socks4://192.168.234.1:8081"
+    или
 
+    docker-compose down
 #### Тестирование ####
 
-    $ curl https://google.com
+    $ docker-compose build
+    $ docker-compose up
+    $.\spam.bat
